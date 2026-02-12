@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "A2A Message",
+  "type": "object",
+  "required": [
+    "message_id",
+    "session_id",
+    "project_id",
+    "from_agent",
+    "to_agent",
+    "message_type",
+    "phase",
+    "payload",
+    "ts"
+  ],
+  "properties": {
+    "message_id": { "type": "string" },
+    "session_id": { "type": "string" },
+    "project_id": { "type": "string" },
+    "from_agent": { "type": "string" },
+    "to_agent": { "type": "string" },
+    "message_type": {
+      "type": "string",
+      "enum": [
+        "HANDSHAKE_REQUEST",
+        "HANDSHAKE_ACK",
+        "HANDSHAKE_REJECT",
+        "CONTENT",
+        "STATUS",
+        "HEARTBEAT",
+        "INTERRUPT"
+      ]
+    },
+    "phase": { "type": "string" },
+    "requires_ack": { "type": "boolean", "default": false },
+    "correlation_id": { "type": ["string", "null"] },
+    "payload": { "type": "object", "additionalProperties": true },
+    "ts": { "type": "string", "format": "date-time" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "message_type": { "const": "HANDSHAKE_REQUEST" } } },
+      "then": { "properties": { "requires_ack": { "const": true } } }
+    }
+  ]
+}
