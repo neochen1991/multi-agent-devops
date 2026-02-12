@@ -72,3 +72,34 @@ flowchart LR
 5. Review 审查通过则 merge 到 `dev`；拒绝则返回 `HANDSHAKE_REJECT` + 修改意见。
 6. QA 基于需求生成测试用例，调用测试 skill 执行，产出测试报告。
 7. 前端全程实时展示消息流、状态、日志、记忆文件内容。
+
+## 6) 如何启动项目（方案 A：可运行版）
+
+### 启动后端（FastAPI）
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r backend/requirements.txt
+uvicorn backend.api.app:app --host 0.0.0.0 --port 8000 --reload
+```
+
+后端 WebSocket 地址：`ws://localhost:8000/ws`。
+
+### 启动前端（Vite + React + TypeScript）
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+默认前端地址：`http://localhost:4173`，会连接后端 `ws://localhost:8000/ws`。
+
+### 本地体验流程
+
+1. 先启动后端，再启动前端。
+2. 打开前端页面，点击“启动流程”。
+3. 在对话区查看 PM/BA/Dev/Review/QA 的实时消息和握手状态。
+4. 使用“强制暂停 / 继续执行”验证全局干预。
+=======
